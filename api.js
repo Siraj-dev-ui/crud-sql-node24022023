@@ -31,42 +31,10 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// add user
-router.route('/users').post((request, response) => {
-  console.log('adding user to db : ', request.body);
-  let user = { ...request.body };
-  Db.addUser(user).then((data) => {
-    response.status(201).json(data);
-  });
-});
-
-/**
- * @swagger
- * /api:
- *  get:
- *      summary: this is summary
- *      description: this is api description
- *      responses:
- *          200:
- *              description: description to test get method
- */
-router.route('/').get((request, response) => {
-  response.send('welcome to mongo db api...');
-});
-
-// "ID": "1",
-//         "Name": "siraj",
-//         "Email": "sirajalig@gmail.com",
-//         "Password": "123",
-//         "PasswordHash": "123hashed",
-//         "DateOfBirth": "1-10-1998",
-//         "Age": 25,
-//         "Gender": "Male"
-
 /**
  * @swagger
  * components:
- *    schema:
+ *    schemas:
  *        User:
  *            type: object
  *            properties:
@@ -87,6 +55,35 @@ router.route('/').get((request, response) => {
  *                Gender:
  *                    type: string
  */
+
+/**
+ * @swagger
+ * /api/users:
+ *  post:
+ *      summary: Adding user
+ *      description: this api is used to add user data to database
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                   schema:
+ *                       $ref: '#components/schemas/User'
+ *
+ *      responses:
+ *          200:
+ *              description: user added successfully...
+ */
+// add user
+router.route('/users').post((request, response) => {
+  console.log('adding user to db : ', request.body);
+  let user = { ...request.body };
+  Db.addUser(user).then((data) => {
+    response
+      .status(201)
+      .json(data ? 'user added successfully...' : 'user not added...');
+  });
+});
+
 /**
  * @swagger
  * /api/users:
@@ -101,26 +98,20 @@ router.route('/').get((request, response) => {
  *                      schema:
  *                          type: array
  *                          items:
- *                              $ref: '#components/schema/User'
+ *                              $ref: '#components/schemas/User'
  */
+
+// get users
 router.route('/users').get((request, response) => {
   Db.getUsers().then((data) => {
     response.status(200).json(data[0]);
   });
 });
 
-// delete user
-router.delete('/deleteuser/:userId', (request, response) => {
-  try {
-    Db.deleteUser(request.params.userId).then((data) => {
-      response.json(data[0]);
-    });
-  } catch (err) {
-    response.json({ success: false, message: err });
-  }
-});
+// update data
 
 router.patch('/updateuser/:userId', (req, res) => {
+  console.log('in patch request...');
   try {
     Db.updateUser(req.params.userId, req.body).then((success) => {
       if (success) {
@@ -131,6 +122,17 @@ router.patch('/updateuser/:userId', (req, res) => {
     });
   } catch (err) {
     res.json({ success: false, errorMessage: err });
+  }
+});
+
+// delete user
+router.delete('/deleteuser/:userId', (request, response) => {
+  try {
+    Db.deleteUser(request.params.userId).then((data) => {
+      response.json(data[0]);
+    });
+  } catch (err) {
+    response.json({ success: false, message: err });
   }
 });
 
