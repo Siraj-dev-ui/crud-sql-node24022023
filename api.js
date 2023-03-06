@@ -6,6 +6,8 @@ var app = express();
 var router = express.Router();
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const { config } = require('./config/emailConfig');
+const nodemailer = require('nodemailer');
 // const userRoute = require('./routes/UserRoutes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -75,13 +77,47 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *              description: user added successfully...
  */
 // add user
-router.route('/users').post((request, response) => {
-  let user = { ...request.body };
-  Db.addUser(user).then((data) => {
-    response
-      .status(201)
-      .json(data ? 'user added successfully...' : 'user not added...');
-  });
+router.route('/users').post(async (request, response) => {
+  console.log('adding data...');
+  try {
+    let user = { ...request.body };
+    // const config = {
+    //   user: 'userdummy105@gmail.com',
+    //   pass: 'aoxunossxmgmgwdp',
+    // };
+
+    const transport = await nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: config.user,
+        pass: config.pass,
+      },
+    });
+    Db.addUser(user)
+      .then((data) => {
+        response
+          .status(201)
+          .json(data ? 'user added successfully...' : 'user not added...');
+
+        transport
+          .sendMail({
+            // from: config.user,
+            from: config.user,
+            to: user.Email,
+            subject: 'Successfully registered...',
+            html: `<h1>Email Confirmation</h1>
+        <h2>Hello siraj</h2>
+        <p>Thank you for subscribing. </p>
+        </div>`,
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        response.status(404).json(error);
+      });
+  } catch (error) {
+    response.status(404).json(error);
+  }
 });
 
 /**
