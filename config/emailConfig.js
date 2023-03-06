@@ -1,4 +1,4 @@
 exports.config = {
   user: 'userdummy105@gmail.com',
-  pass: 'aoxunossxmgmgwdp',
+  pass: process.env.EMAIL_PASS,
 };
