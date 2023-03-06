@@ -1,4 +1,4 @@
-var Db = require('./dboperations');
+var Db = require('./services/dbOperations');
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
@@ -6,6 +6,7 @@ var app = express();
 var router = express.Router();
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+// const userRoute = require('./routes/UserRoutes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -75,7 +76,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  */
 // add user
 router.route('/users').post((request, response) => {
-  console.log('adding user to db : ', request.body);
   let user = { ...request.body };
   Db.addUser(user).then((data) => {
     response
@@ -110,8 +110,37 @@ router.route('/users').get((request, response) => {
 
 // update data
 
+/**
+ * @swagger
+ * /api/updateuser/{userId}:
+ *  patch:
+ *      summary: Adding user
+ *      description: this api is used to add user data to database
+ *      parameters:
+ *          - in: path
+ *            name: userId
+ *            required: true
+ *            description: Numeric ID required
+ *            schema:
+ *              type: integer
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                   schema:
+ *                       $ref: '#components/schemas/User'
+ *      responses:
+ *          200:
+ *              description: user added successfully...
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#components/schemas/User'
+ */
+
 router.patch('/updateuser/:userId', (req, res) => {
-  console.log('in patch request...');
   try {
     Db.updateUser(req.params.userId, req.body).then((success) => {
       if (success) {
@@ -125,11 +154,29 @@ router.patch('/updateuser/:userId', (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/deleteuser/{userId}:
+ *  delete:
+ *      summary: Delete User
+ *      description: this api is used to delete user data from database
+ *      parameters:
+ *          - in: path
+ *            name: userId
+ *            required: true
+ *            description: Numeric ID required
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: data is deleted
+ */
+
 // delete user
 router.delete('/deleteuser/:userId', (request, response) => {
   try {
     Db.deleteUser(request.params.userId).then((data) => {
-      response.json(data[0]);
+      response.json({ success: true, message: 'User deleted successfully...' });
     });
   } catch (err) {
     response.json({ success: false, message: err });
@@ -140,6 +187,8 @@ router.use((request, response, next) => {
   console.log('middleware');
   next();
 });
+
+// app.use('/api', authRoute);
 
 // swagger
 

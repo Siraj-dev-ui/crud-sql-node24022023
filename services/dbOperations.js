@@ -1,4 +1,4 @@
-var config = require('./dbconfig');
+var config = require('../config/dbConfig');
 const sql = require('mssql');
 
 async function getUsers() {
