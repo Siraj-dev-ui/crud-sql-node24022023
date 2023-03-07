@@ -6,6 +6,7 @@ var app = express();
 var router = express.Router();
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const authRoutes = require('./routes/AuthRoutes');
 // const userRoute = require('./routes/UserRoutes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -188,7 +189,8 @@ router.use((request, response, next) => {
   next();
 });
 
-// app.use('/api', authRoute);
+// other routes
+app.use('/auth', authRoutes);
 
 // swagger
 

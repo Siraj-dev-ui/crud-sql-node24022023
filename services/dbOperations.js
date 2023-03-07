@@ -76,9 +76,25 @@ async function updateUser(UserId, UserData) {
   }
 }
 
+async function insertUpdateDelete(query) {
+  let pool = await sql.connect(config);
+  const data = await pool.query(query);
+  console.log('insert/update/delete result : ', data.rowsAffected[0]);
+  return data;
+}
+
+async function getRecord(query) {
+  let pool = await sql.connect(config);
+  const data = await pool.query(query);
+  console.log('data to return on get request : ', data);
+  return data.recordset;
+}
+
 module.exports = {
   addUser: addUser,
   getUsers: getUsers,
   deleteUser: deleteUser,
   updateUser: updateUser,
+  insertUpdateDelete,
+  getRecord,
 };
