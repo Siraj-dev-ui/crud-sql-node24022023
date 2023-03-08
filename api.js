@@ -33,6 +33,29 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+const loginSignupOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'node js api endpoint',
+      version: '1.0.0',
+    },
+    servers: [
+      {
+        url: 'http://localhost:8080/',
+      },
+    ],
+  },
+  apis: [`./routes/AuthRoutes.js`],
+};
+
+const swaggerSpecLoginSignup = swaggerJSDoc(loginSignupOptions);
+app.use(
+  '/signuplogin-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpecLoginSignup)
+);
+
 /**
  * @swagger
  * components:

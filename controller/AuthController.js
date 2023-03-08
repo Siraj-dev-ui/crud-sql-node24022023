@@ -1,5 +1,6 @@
 const Db = require('../services/dbOperations');
 const jwt = require('jsonwebtoken');
+
 exports.signup = async (req, res) => {
   const { email, password, cnic } = req.body;
   try {
