@@ -20,7 +20,7 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     let { email, password } = req.body;
-    let query = `select top 1 * from signup where Email='${email}' and password='${password}'`;
+    let query = `select * from signup where Email='${email}' and password='${password}'`;
     const data = await Db.getRecord(query);
     if (data.length > 0) {
       const token = jwt.sign(
@@ -32,11 +32,12 @@ exports.login = async (req, res) => {
           expiresIn: '2h',
         }
       );
+
+      // method 1
       res.set('Authorization', `Bearer ${token}`);
 
-      res
-        .header('auth-token', token)
-        .json({ success: true, payload: data[0], token: token });
+      // method 2
+      res.header('auth-token', token).json({ success: true, payload: data[0] });
     } else {
       res.json({ success: false, message: 'Incorrect email or password...' });
     }
