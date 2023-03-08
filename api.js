@@ -6,12 +6,12 @@ var app = express();
 var router = express.Router();
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-// const userRoute = require('./routes/UserRoutes');
+const userRoute = require('./routes/UserRoutes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use('/api', router);
+// app.use('/api', router);
 
 const options = {
   definition: {
@@ -83,6 +83,8 @@ router.route('/users').post((request, response) => {
       .json(data ? 'user added successfully...' : 'user not added...');
   });
 });
+
+router.post('/users');
 
 /**
  * @swagger
@@ -188,7 +190,7 @@ router.use((request, response, next) => {
   next();
 });
 
-// app.use('/api', authRoute);
+app.use('/api', userRoute);
 
 // swagger
 
