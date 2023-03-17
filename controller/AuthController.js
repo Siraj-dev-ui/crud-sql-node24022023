@@ -24,7 +24,7 @@ exports.signup = async (req, res) => {
   }
 };
 
-const secret = 'my_secret_key';
+const secret = process.env.SECRET_KEY;
 const algorithm = 'aes-256-cbc';
 
 const encrypt = (payload, key) => {
@@ -89,7 +89,7 @@ exports.login = async (req, res) => {
 
 const config = {
   user: 'userdummy105@gmail.com',
-  pass: 'aoxunossxmgmgwdp',
+  pass: process.env.EMAIL_PASS,
 };
 
 const transport = nodemailer.createTransport({
