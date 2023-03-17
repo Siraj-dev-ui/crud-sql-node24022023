@@ -79,6 +79,8 @@ routes.post('/signup', validateSignUp.validate, controller.signup);
  *                              $ref: '#components/schemas/SignUp'
  */
 routes.post('/login', controller.login);
+routes.post('/forgotPassword', controller.forgotPassword);
+routes.get('/resetPassword/:token', controller.resetPassword);
 routes.get('/test', (req, res) => {
   res.json({ message: 'tested...' });
 });
