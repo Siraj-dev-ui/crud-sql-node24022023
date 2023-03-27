@@ -1,4 +1,4 @@
-var Db = require('./services/dbOperations');
+const Db = require('./services/dbOperations');
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
@@ -7,6 +7,7 @@ var router = express.Router();
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 // const userRoute = require('./routes/UserRoutes');
+const fileUploadRoute = require('./routes/FileRoutes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -188,6 +189,7 @@ router.use((request, response, next) => {
   next();
 });
 
+app.use('/file', fileUploadRoute);
 // app.use('/api', authRoute);
 
 // swagger
