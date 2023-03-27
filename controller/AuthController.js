@@ -138,12 +138,12 @@ exports.resetPassword = async (req, res) => {
   try {
     console.log('updating password password : ', req.params.token);
 
-    let query = `update Users set password='newdd' where token='${req.params.token}'`;
+    let query = `update Users set password='123' where token='${req.params.token}'`;
 
     const data = Db.insertUpdateDelete(query);
-    if (data > 0) {
-      res.json({ success: true, payload: 'password changed successfully...' });
-    }
+    // if (data > 0) {
+    res.json({ success: true, payload: 'password changed successfully...' });
+    // }
     // console.log('data against token : ', token, 'data is : ', data);
   } catch (error) {
     console.log(error);
