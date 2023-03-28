@@ -62,6 +62,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  * @swagger
  * /api/users:
  *  post:
+ *      tags:
+ *        - CRUD
  *      summary: Adding user
  *      description: this api is used to add user data to database
  *      requestBody:
@@ -90,6 +92,8 @@ router.route('/users').post((request, response) => {
  * /api/users:
  *  get:
  *      summary: Getting all users
+ *      tags:
+ *        - CRUD
  *      description: this api is used to get user data from database
  *      responses:
  *          200:
@@ -116,6 +120,8 @@ router.route('/users').get((request, response) => {
  * /api/updateuser/{userId}:
  *  patch:
  *      summary: Adding user
+ *      tags:
+ *        - CRUD
  *      description: this api is used to add user data to database
  *      parameters:
  *          - in: path
@@ -160,6 +166,8 @@ router.patch('/updateuser/:userId', (req, res) => {
  * /api/deleteuser/{userId}:
  *  delete:
  *      summary: Delete User
+ *      tags:
+ *        - CRUD
  *      description: this api is used to delete user data from database
  *      parameters:
  *          - in: path
