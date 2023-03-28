@@ -21,7 +21,10 @@ const fileFilter = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    cb(null, false);
+    req.fileValidationError = `you are uploading  ( ${
+      file.originalname.split(`.`)[1]
+    } ) formate which isn't allowed. Only (png, jpeg, jpg & pdf) allowed to upload`;
+    cb(null, false, req.fileValidationError);
   }
 };
 
