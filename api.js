@@ -27,7 +27,7 @@ const options = {
       },
     ],
   },
-  apis: [`./api.js`],
+  apis: [`./api.js`, `./routes/FileRoutes.js`],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

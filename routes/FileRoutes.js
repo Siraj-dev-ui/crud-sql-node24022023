@@ -62,17 +62,13 @@ const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
  *      tags:
  *        - File Uploading
  *      summary: Adding user
- *      description: this api is used to add user data to database
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                   schema:
- *                       $ref: '#components/schemas/User'
- *
- *      responses:
- *          200:
- *              description: user added successfully...
+ *      consumes:
+ *        - multipart/form-data
+ *      parameters:
+ *        - in: formData
+ *          name: upfile
+ *          type: file
+ *          description: The file to upload.
  */
 
 routes.post('/uploadFile', upload.single('file'), controller.uploadFile);
