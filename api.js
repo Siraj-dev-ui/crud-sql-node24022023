@@ -23,7 +23,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:8080/',
+        url: process.env.SWAGGER_URL,
       },
     ],
   },
@@ -45,7 +45,20 @@ const loginSignupOptions = {
         url: 'http://localhost:8080/',
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: {
+      bearerAuth: [],
+    },
   },
+
   apis: [`./routes/AuthRoutes.js`],
 };
 

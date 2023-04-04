@@ -59,6 +59,8 @@ routes.post('/signup', validateSignUp.validate, controller.signup);
  * @swagger
  * /auth/login:
  *  post:
+ *      security:
+ *        - bearerAuth: []
  *      summary: Login User
  *      description: This api will login user
  *      requestBody:
